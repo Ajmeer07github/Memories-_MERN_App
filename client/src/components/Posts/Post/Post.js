@@ -3,17 +3,45 @@ import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 
-import { deletePost,likePost } from '../../../actions/posts';
+import { likePost, deletePost } from '../../../actions/posts';
 import Styles from './Poststyle';
      
 const Post = ({ post, setCurrentId }) => {
 
-    const classes =Styles();
+  const dispatch = useDispatch(); 
+  
+  const classes =Styles();
+    
+  const user = JSON.parse(localStorage.getItem('profile'));
+    
+  const Likes = () => {
+      if (post.likes.length > 0) {
+        return post.likes.find((like) => like ===  user?.result?._id)
 
-    const dispatch = useDispatch();   
+          ? (
+            <>
+            <ThumbUpAltIcon fontSize="small" />
+            &nbsp;
+            { post.likes.length > 2 ? `You and ${post.likes.length - 1} others` : `${post.likes.length} like${post.likes.length > 1 ?'s' : ''}` 
+            }
+            </>
+
+          ) : (
+            <>
+            <ThumbUpAltOutlined fontSize="small" />
+            &nbsp;
+            {post.likes.length} {post.likes.length === 1 ? 'Like' : 'Likes'}
+            </>
+          );
+      }
+  
+      return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
+    }; 
+
 
   return (
     <Card className={classes.card}>
@@ -24,13 +52,18 @@ const Post = ({ post, setCurrentId }) => {
       />
 
       <div className={classes.overlay}>
-        <Typography variant='h6'>{post.creator}
+        <Typography variant='h6'>
+          {post.name}
         </Typography>
 
         <Typography variant='body2'>{moment(post.createdAt).fromNow()
         }</Typography>
       </div>
 
+
+        {/* logic to implimenting that created user can only edit the post */}
+
+      {(user?.result?._id === post?.creator) && (
       <div className={classes.overlay2}>
         <Button
           style={{color: 'white'}}
@@ -39,6 +72,7 @@ const Post = ({ post, setCurrentId }) => {
             <MoreHorizIcon fontSize='medium'/>
           </Button>
       </div>
+      )}
       
       <div className={classes.details}>
         <Typography 
@@ -68,22 +102,27 @@ const Post = ({ post, setCurrentId }) => {
 
         {/* like button */}
         <Button size="small" color='primary' 
+        disabled={!user?.result}
         onClick={() => dispatch(likePost(post._id))} >
-          {/* &nbsp; used for adding space between the like icon and likecount */}
-          <ThumbUpAltIcon fontSize="small"/>
-          &nbsp; Like &nbsp; 
-          {post.likeCount}
+          <Likes/>
         </Button>
 
         {/* delete button */}
 
-        <Button size="small" color='primary' 
-        onClick={() => dispatch(deletePost(post._id ))} >
+        {/* logic for implimenting that created user only can delete the post */}
 
-          <DeleteIcon fontSize="small"/>
-          &nbsp; Delete
-          
-        </Button>
+        {(user?.result?._id === post?.creator) && (
+          <Button size="small" color='primary' 
+          onClick={() => dispatch(deletePost(post._id ))} >
+  
+            <DeleteIcon fontSize="small"/>
+            &nbsp; Delete
+            
+          </Button>
+        )}
+
+
+        
 
       </CardActions>
 

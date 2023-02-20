@@ -10,7 +10,6 @@ import { createPost, updatePost } from '../../actions/posts';
 const Form = ({ currentId, setCurrentId }) => {
     
 const [postData, setPostData] = useState({
-  creator:'',
   title:'',
   message:'',
   tags:'',
@@ -19,38 +18,60 @@ const [postData, setPostData] = useState({
   //to fetch the post's data in the from to update when Morehorizon button clicked
   const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId ) : null);
 
-    const classes =Styles(); 
+    const classes =Styles();
+
     const dispatch = useDispatch();
     // to update the post click the three dot the current post's details will show in the form 
     
+    // getting username to fetch it in the post from the email/name in local storage
+
+    const user = JSON.parse(localStorage.getItem('profile'));
+
     useEffect(() => {
         if(post) setPostData(post);
     }, [post])
 
-    //to post the data after the user hits submit
-    
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        if (currentId) {
-          dispatch(updatePost(currentId, postData));
-        }
-        else{
-           dispatch(createPost(postData));
-        }
-        clear();
-        
-    }
     const clear = () => {
-      setCurrentId(null);
+      setCurrentId(0);
       setPostData({
-        creator:'',
         title:'',
         message:'',
         tags:'',
-        selectedFile:''
+        selectedFile:'',
       });
     }
+
+    //to post the data after the user hits submit
+    
+    const handleSubmit = async (e) => {
+      
+      e.preventDefault();
+  
+      if (currentId === 0) {
+        dispatch(createPost({ ...postData, name: user?.result?.name }));
+
+        clear();
+
+      } else {
+
+        dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
+        
+        clear();
+      }
+    };
+
+    // if user doesnt signedin or signedup 
+
+    if(!user?.result?.name){
+      return (
+        <Paper className={classes.paper}>
+          <Typography variant="h6" align="center">
+            Please Sign To Add Memories
+          </Typography>
+        </Paper>
+      );
+    }
+
     
   return (
     <Paper className={classes.paper}>
@@ -64,7 +85,7 @@ const [postData, setPostData] = useState({
           { currentId ? 'Edit' : 'Create' } a Memory
         </Typography>
 
-        <TextField
+        {/* /* <TextField
         name="creator"
         variant="outlined"
         label="Creator"
@@ -74,7 +95,8 @@ const [postData, setPostData] = useState({
         //The value attribute is used to set the initial value of the input field. It"s set to postData.creator, which means that the input field will display the value of the creator property of the postData object.
 
         // The onChange event handler is triggered whenever the user makes a change in the input field. The event handler takes the input event (e) as an argument and updates the postData object using the setPostData hook. The ...postData syntax is used to spread the properties of the postData object into a new object. The creator property of the postData object is then updated with the value of the input field (e.target.value).
-        />
+        /> */ }
+
         <TextField
         name="title"
         variant="outlined"
@@ -118,12 +140,11 @@ const [postData, setPostData] = useState({
         >Submit</Button>
 
         <Button 
-          variant="contained"
-          color="secondary"
-          size="large"
-          type="small"
-          onClick={clear}
-          fullWidth
+        variant="contained" 
+        color="secondary" 
+        size="small" 
+        onClick={clear} 
+        fullWidth
         >Clear</Button>
 
       </form>
@@ -132,4 +153,4 @@ const [postData, setPostData] = useState({
   )
 }
 
-export default Form
+export default Form;
