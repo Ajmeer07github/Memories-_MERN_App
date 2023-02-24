@@ -9,13 +9,19 @@ import Style from './Poststyle';
     
 const Posts = ({ setCurrentId }) => {
     //the state.post comes from index.js in reducers
-    const posts = useSelector((state) => state.posts);
+    const { posts, isLoading } = useSelector((state) => state.posts);
     
     const classes =Style(); 
     
-    console.log(posts);
+    // console.log(posts);
+
+    if (!posts.length && !isLoading ){
+      return "No Posts available";
+      
+    }
+
   return (
-    !posts.length ? <CircularProgress/> : (
+    isLoading ? <CircularProgress/> : (
       <Grid
       className={classes.conatiner}
       container
@@ -24,7 +30,7 @@ const Posts = ({ setCurrentId }) => {
       >
       {
         posts.map((post) =>(
-          <Grid key={post._id} item xs={12} sm={6}>
+          <Grid key={post._id} item xs={12} sm={12} md={6} lg={3}>
               {/* prop drilling contunuosly sending the prop over and over again */}
             <Post post={post} setCurrentId={setCurrentId}/>           
             

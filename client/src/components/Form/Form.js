@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import  { TextField, Button, Typography, Paper} from '@material-ui/core';
 import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import ChipInput from 'material-ui-chip-input';
 
 import Styles from './formstyle';
 import { createPost, updatePost } from '../../actions/posts';
@@ -12,14 +14,14 @@ const Form = ({ currentId, setCurrentId }) => {
 const [postData, setPostData] = useState({
   title:'',
   message:'',
-  tags:'',
+  tags:[],
   selectedFile:''
 });
   //to fetch the post's data in the from to update when Morehorizon button clicked
-  const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId ) : null);
+  const post = useSelector((state) => currentId ? state.posts.posts.find((p) => p._id === currentId ) : null);
 
     const classes =Styles();
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     // to update the post click the three dot the current post's details will show in the form 
     
@@ -28,15 +30,16 @@ const [postData, setPostData] = useState({
     const user = JSON.parse(localStorage.getItem('profile'));
 
     useEffect(() => {
-        if(post) setPostData(post);
-    }, [post])
+      if (!post?.title) clear();
+      if (post) setPostData(post);
+    }, [post]);
 
     const clear = () => {
       setCurrentId(0);
       setPostData({
         title:'',
         message:'',
-        tags:'',
+        tags:[],
         selectedFile:'',
       });
     }
@@ -48,7 +51,7 @@ const [postData, setPostData] = useState({
       e.preventDefault();
   
       if (currentId === 0) {
-        dispatch(createPost({ ...postData, name: user?.result?.name }));
+        dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
 
         clear();
 
@@ -64,7 +67,7 @@ const [postData, setPostData] = useState({
 
     if(!user?.result?.name){
       return (
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={6}>
           <Typography variant="h6" align="center">
             Please Sign To Add Memories
           </Typography>
@@ -72,30 +75,26 @@ const [postData, setPostData] = useState({
       );
     }
 
+    const handleAddChip = (tag) => {
+      setPostData({ ...postData, tags: [...postData.tags, tag] });
+    };
+  
+    const handleDeleteChip = (chipToDelete) => {
+      setPostData({ ...postData, tags: postData.tags.filter((tag) => tag !== chipToDelete) });
+    };
     
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form
       className={`${classes.root} ${classes.form}`}
       autoComplete="off"
+      elevation={6}
       noValidate
       onSubmit={handleSubmit}
       >
         <Typography variant="h6">
           { currentId ? 'Edit' : 'Create' } a Memory
         </Typography>
-
-        {/* /* <TextField
-        name="creator"
-        variant="outlined"
-        label="Creator"
-        fullWidth
-        value={postData.creator}
-        onChange={(e) => setPostData({ ...postData, creator: e.target.value})}
-        //The value attribute is used to set the initial value of the input field. It"s set to postData.creator, which means that the input field will display the value of the creator property of the postData object.
-
-        // The onChange event handler is triggered whenever the user makes a change in the input field. The event handler takes the input event (e) as an argument and updates the postData object using the setPostData hook. The ...postData syntax is used to spread the properties of the postData object into a new object. The creator property of the postData object is then updated with the value of the input field (e.target.value).
-        /> */ }
 
         <TextField
         name="title"
@@ -110,18 +109,23 @@ const [postData, setPostData] = useState({
         variant="outlined"
         label="Message"
         fullWidth
+        multiline
+        maxRows={4}
         value={postData.message}
         onChange={(e) => setPostData({ ...postData, message: e.target.value})}
         />
         
-        <TextField
-        name="tags"
-        variant="outlined"
-        label="Tags"
-        fullWidth
-        value={postData.tags}
-        onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',')})}
-        />
+        <div style={{ padding: '5px 0', width: '94%' }}>
+          <ChipInput
+            name="tags"
+            variant="outlined"
+            label="Tags"
+            fullWidth
+            value={postData.tags}
+            onAdd={(chip) => handleAddChip(chip)}
+            onDelete={(chip) => handleDeleteChip(chip)}
+          />
+        </div>
         
         {/* to convert the image to text we use filebase 64 */}
         <div className={classes.fileInput}>

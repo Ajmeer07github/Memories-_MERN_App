@@ -51,7 +51,7 @@ const Navbar = () => {
         <div className={classes.brandContainer}>
 
             <Typography component={Link} to ='/' className={classes.title} variant='h2' align='center'>
-            Memories
+            NOSTALGIARY
             </Typography>
             <img className={classes.memories_logo} src={memories} alt="memorieslogo" height="60" />
 

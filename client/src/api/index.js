@@ -12,7 +12,11 @@ API.interceptors.request.use((req) => {
     return req;
   });
 
-export const fetchPosts = () => API.get('/posts'); 
+export const fetchPost = (id) => API.get(`/posts/${id}`); 
+
+export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
+
+export const fetchPostBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || "none"}&tags=${searchQuery.tags}`);
 
 //sends a POST request to the URL specified with the payload "newPost". The axios.post method is used to make a POST request with axios.
 
@@ -23,6 +27,7 @@ export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
 
 export const deletePost = (id) => API.delete(`/posts/${id}`);
+
  
 //  signin and signout routes
 

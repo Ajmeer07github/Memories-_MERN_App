@@ -1,11 +1,12 @@
 import React from 'react';
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core/';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, ButtonBase } from '@material-ui/core/';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { likePost, deletePost } from '../../../actions/posts';
 import Styles from './Poststyle';
@@ -13,7 +14,8 @@ import Styles from './Poststyle';
 const Post = ({ post, setCurrentId }) => {
 
   const dispatch = useDispatch(); 
-  
+  const navigate = useNavigate();
+
   const classes =Styles();
     
   const user = JSON.parse(localStorage.getItem('profile'));
@@ -42,61 +44,77 @@ const Post = ({ post, setCurrentId }) => {
       return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
     }; 
 
+    // openpost function block
+    const openPost = () => {
+      navigate(`/posts/${post._id}`);
+    };
+
 
   return (
-    <Card className={classes.card}>
-      <CardMedia
-        className={classes.media}
-        image={post.selectedFile}
-        title={post.title}
-      />
-
-      <div className={classes.overlay}>
-        <Typography variant='h6'>
-          {post.name}
-        </Typography>
-
-        <Typography variant='body2'>{moment(post.createdAt).fromNow()
-        }</Typography>
-      </div>
-
-
-        {/* logic to implimenting that created user can only edit the post */}
-
-      {(user?.result?._id === post?.creator) && (
-      <div className={classes.overlay2}>
-        <Button
-          style={{color: 'white'}}
-          size='small'
-          onClick={() => setCurrentId(post._id)} >
-            <MoreHorizIcon fontSize='medium'/>
-          </Button>
-      </div>
-      )}
+    <Card  className={classes.card} raised elevation={6}>
       
-      <div className={classes.details}>
-        <Typography 
-          variant='body2'
-          color="textSecondary">
-            {post.tags.map((tag) => `#${tag} `)}
+      <ButtonBase
+        className={classes.cardAction}
+        onClick={openPost}
+      >
+
+        <CardMedia 
+          className={classes.media}
+          image={post.selectedFile }
+          title={post.title}
+        />
+
+        <div className={classes.overlay}>
+          <Typography variant='h6'>
+            {post.name}
           </Typography>
-      </div>
-      <Typography 
-          className={classes.title}
-          variant='h5'
-          gutterBottom >
-            {post.title}
-        </Typography>
-      <CardContent>
-        <Typography 
+
+          <Typography variant='body2'>{moment(post.createdAt).fromNow()
+          }</Typography>
+        </div>
+
+
           
-          variant='body2'
-          color='textSecondary'
-          component="p"
-          >
-            {post.message}
-        </Typography>
-      </CardContent>
+        
+        <div className={classes.details}>
+          <Typography 
+            variant='body2'
+            color="textSecondary">
+              {post.tags.map((tag) => `#${tag} `)}
+            </Typography>
+        </div>
+
+        <Typography 
+            className={classes.title}
+            variant='h5'
+            gutterBottom >
+              {post.title}
+          </Typography>
+
+        <CardContent>
+          <Typography 
+            
+            variant='body2'
+            color='textSecondary'
+            component="p"
+            >
+              {post.message}
+          </Typography>
+        </CardContent>
+
+      </ButtonBase>
+
+      {/* logic to implimenting that created user can only edit the post */}
+      {(user?.result?._id === post?.creator) && (
+        <div className={classes.overlay2}>
+          <Button
+            style={{color: 'white'}}
+            size='small'
+            onClick={() => setCurrentId(post._id)} >
+              <MoreHorizIcon fontSize='medium'/>
+            </Button>
+        </div>
+        )}
 
       <CardActions className={classes.cardActions}>
 
@@ -120,10 +138,6 @@ const Post = ({ post, setCurrentId }) => {
             
           </Button>
         )}
-
-
-        
-
       </CardActions>
 
     </Card>
