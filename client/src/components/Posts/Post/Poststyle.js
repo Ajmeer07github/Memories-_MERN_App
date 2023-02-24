@@ -22,8 +22,7 @@ export default makeStyles({
     position: 'relative',
     '&:hover': {
       transform: 'scale(1.05)',
-      boxShadow: '1px 7px 15px #FFF',
-      
+      boxShadow: '1px 7px 15px #FFF', 
     },
 
   },
