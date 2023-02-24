@@ -92,7 +92,7 @@ const [postData, setPostData] = useState({
       noValidate
       onSubmit={handleSubmit}
       >
-        <Typography variant="h6">
+        <Typography variant="h6" className={classes.formHead}>
           { currentId ? 'Edit' : 'Create' } a Memory
         </Typography>
 
@@ -146,7 +146,7 @@ const [postData, setPostData] = useState({
         <Button 
         variant="contained" 
         color="secondary" 
-        size="small" 
+        size="medium" 
         onClick={clear} 
         fullWidth
         >Clear</Button>

@@ -20,7 +20,14 @@ export default makeStyles({
     borderRadius: '15px',
     height: '100%',
     position: 'relative',
+    '&:hover': {
+      transform: 'scale(1.05)',
+      boxShadow: '1px 7px 15px #FFF',
+      
+    },
+
   },
+  
   overlay: {
     position: 'absolute',
     top: '20px',

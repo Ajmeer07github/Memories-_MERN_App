@@ -72,9 +72,6 @@ const Post = ({ post, setCurrentId }) => {
           <Typography variant='body2'>{moment(post.createdAt).fromNow()
           }</Typography>
         </div>
-
-
-          
         
         <div className={classes.details}>
           <Typography 
