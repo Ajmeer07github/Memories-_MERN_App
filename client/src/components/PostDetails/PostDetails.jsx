@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core';
+import { Paper, Typography, CircularProgress, Divider, Grid,Card } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -101,21 +101,29 @@ const PostDetails = () => {
           <Divider />
           
           <div className={classes.recommendedPosts}>
-            { recommendedPosts.map(({ title, name, likes, selectedFile, _id}) => (
+
+            <Grid container alignItems = "stretch" spacing = {1}>
               
-              <div 
-              style={{ margin:'20px',cursor:'pointer'}}  
-              onClick={() => openPost(_id)} key={_id}
-              >
-                <Typography gutterBottom variant='h6'>{title}</Typography>
-                <Typography gutterBottom variant='subtitle2'>{name}</Typography>
-                {/* <Typography gutterBottom variant='subtitle2'>{message}</Typography> */}
+              { recommendedPosts.map(({ title, name, likes, selectedFile, _id}) => (
+                <Grid item lg={4} md={3} sm={2} xs={1}>
+                    <Card raised className={classes.recCard}>
+                    <div 
+                    style={{ height:"400px", margin:'20px',cursor:'pointer'}}  
+                    onClick={() => openPost(_id)} key={_id}
+                    >
+                      <Typography gutterBottom variant='h6'>{title}</Typography>
+                      <Typography gutterBottom variant='subtitle2'>{name}</Typography>
+                      {/* <Typography gutterBottom variant='subtitle2'>{message}</Typography> */}
 
-                <Typography gutterBottom variant='subtitle1'>Likes:{likes.length}</Typography>
-                <img src={selectedFile} width='200px' alt={name} />
-
-              </div>              
-            ))}
+                      <Typography gutterBottom variant='subtitle1'>Likes:{likes.length}</Typography>
+                      <img className={classes.recImg} src={selectedFile} width='200px' alt={name} />
+                      
+                    </div> 
+                    </Card>             
+                </Grid>
+              ))}
+                
+            </Grid>
             
             
           </div>

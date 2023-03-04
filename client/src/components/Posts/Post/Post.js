@@ -16,7 +16,7 @@ const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch(); 
   const navigate = useNavigate();
 
-  const classes =Styles();
+  const classes = Styles();
     
   const user = JSON.parse(localStorage.getItem('profile'));
     
@@ -88,7 +88,7 @@ const Post = ({ post, setCurrentId }) => {
               {post.title}
           </Typography>
 
-        <CardContent>
+        <CardContent className={classes.CardContent}>
           <Typography 
             
             variant='body2'

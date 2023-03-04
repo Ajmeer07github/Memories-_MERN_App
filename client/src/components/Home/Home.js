@@ -68,7 +68,7 @@ const Home = () => {
           <Grid
           className={classes.gridContainer}
           container
-          justif-content='space-between' 
+          justifyContent='space-between' 
           alignItems='stretch'
           spacing={4}
           >
