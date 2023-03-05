@@ -13,10 +13,11 @@ export const signin = async (req, res) => {
         if (!existingUser) return res.status(404).json({ message: "User doesn't exist" });
 
         // if user exist check the entered password is correct or not
+
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.password );
 
         // if password is not correct
-        if (!isPasswordCorrect) return req.status(400).json({ message: "Invalid credentials"});
+        if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials"});
         //if password is correct
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id}, 'test', { expiresIn: "1h"});
 
@@ -24,6 +25,7 @@ export const signin = async (req, res) => {
 
 
     } catch (error) {
+
         res.status(500).json({message: "Something went wrong."});
     }
 
@@ -38,7 +40,7 @@ export const signup = async (req, res) => {
         // is user exist
         if (existingUser) return res.status(400).json({ message: "User already exist" });
         // if entered password is wrong
-        if ( password !== confirmPassword ) return res.status(400).json({ message: "Incorrect Password" });
+        if ( password !== confirmPassword ) return res.status(401).json({ message: "Incorrect Password" });
 
         const hashedPassword  =await bcrypt.hash(password,12);
 

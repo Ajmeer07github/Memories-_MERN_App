@@ -12,7 +12,7 @@ export const getPosts = async (req, res) =>{
 
     try{ 
 
-        const LIMIT = 12;
+        const LIMIT = 8;
         const startIndex = (Number(page) - 1) * LIMIT; //to get the starting index of each page first post
 
         const total = await PostMessage.countDocuments({}); //to count the total pages
