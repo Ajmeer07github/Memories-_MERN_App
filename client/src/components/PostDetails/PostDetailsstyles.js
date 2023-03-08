@@ -23,7 +23,7 @@ export default makeStyles((theme) => ({
     flex: 1,
   },
   imageSection: {
-    marginLeft: '40px',
+    marginLeft: '20px',
     objectFit:"cover",
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
@@ -31,7 +31,6 @@ export default makeStyles((theme) => ({
   },
   recommendedPosts: {
     display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'space-between',
     borderRadius: '15px',
     position: 'relative',

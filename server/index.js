@@ -30,4 +30,4 @@ mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: tru
 
 
 
-mongoose.set('strictQuery', true);
+mongoose.set('strictQuery', false);

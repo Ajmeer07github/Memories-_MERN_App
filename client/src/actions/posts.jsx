@@ -1,7 +1,7 @@
 // importing all the constants from actiontypes
 import { FETCH_ALL, FETCH_BY_SEARCH, FETCH_POST, START_LOADING, END_LOADING, CREATE, UPDATE,LIKE, DELETE } from '../constants/actionTypes';
 
-import * as api from '../api/index.js';
+import * as api from '../api/index.jsx';
 
 
 // Action Creators

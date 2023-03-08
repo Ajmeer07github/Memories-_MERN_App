@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
     textFillColor: 'transparent',
     textDecoration:'none',
     fontFamily:'cursive',
-    fontSize: '3.5em',
+    fontSize: '2em',
     fontWeight: 900,
   },
   image: {

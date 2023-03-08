@@ -43,8 +43,8 @@ const PostDetails = () => {
 
   // post recommendation function
 
-  const recommendedPosts = posts.filter(({ _id }) => _id !== post._id).slice(0,4);
-
+  const shuffledPosts = posts.filter(({ _id }) => _id !== post._id).sort(() => 0.5 - Math.random());
+  const recommendedPosts = shuffledPosts.slice(0,4);
   return (
         <Paper 
         style={{ padding: '20px', 
@@ -95,39 +95,21 @@ const PostDetails = () => {
       </div>
       {/* recommended post */}
 
-      {recommendedPosts.length && (
+      {!!recommendedPosts.length && (
         <div className={classes.section}>
-          <Typography gutterBottom variant='h5'>Posts you might also like</Typography>
+          <Typography gutterBottom variant="h5">Posts You might also like:</Typography>
           <Divider />
-          
           <div className={classes.recommendedPosts}>
-
-            <Grid container alignItems = "stretch" spacing = {1}>
-              
-              { recommendedPosts.map(({ title, name, likes, selectedFile, _id}) => (
-                <Grid item lg={4} md={3} sm={2} xs={1}>
-                    <Card raised className={classes.recCard}>
-                    <div 
-                    style={{ height:"400px", margin:'20px',cursor:'pointer'}}  
-                    onClick={() => openPost(_id)} key={_id}
-                    >
-                      <Typography gutterBottom variant='h6'>{title}</Typography>
-                      <Typography gutterBottom variant='subtitle2'>{name}</Typography>
-                      {/* <Typography gutterBottom variant='subtitle2'>{message}</Typography> */}
-
-                      <Typography gutterBottom variant='subtitle1'>Likes:{likes.length}</Typography>
-                      <img className={classes.recImg} src={selectedFile} width='200px' alt={name} />
-                      
-                    </div> 
-                    </Card>             
-                </Grid>
-              ))}
-                
-            </Grid>
-            
-            
+            {recommendedPosts.map(({ title, name, message, likes, selectedFile, _id }) => (
+              <div style={{ margin: '20px', cursor: 'pointer' }} onClick={() => openPost(_id)} key={_id}>
+                <Typography gutterBottom variant="h6">{title}</Typography>
+                <Typography gutterBottom variant="subtitle2">{name}</Typography>
+                <Typography gutterBottom variant="subtitle2">{message}</Typography>
+                <Typography gutterBottom variant="subtitle1">Likes: {likes.length}</Typography>
+                <img src={selectedFile} width="200px" alt={name} />
+              </div>
+            ))}
           </div>
-          
         </div>
       )} 
       
