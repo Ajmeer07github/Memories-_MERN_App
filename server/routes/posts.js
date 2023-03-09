@@ -6,8 +6,8 @@ import auth from '../middleware/auth.js';
 // in this post.js file all the routes starts with /posts 
 const router = express.Router();
 
-router.get('/search',getPostsBySearch);
 router.get('/',getPosts);
+router.get('/search',getPostsBySearch);
 router.get('/:id',getPost); // : means it is dynamic
  //search route
 
