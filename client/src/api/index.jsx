@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // this is the url of server used to get the posts in the database
-const API = axios.create({ baseURL: 'http://localhost:5000' });
+const API = axios.create({ baseURL: process.env.baseURL });
 // const url = "http://localhost:5000/posts";
 
 API.interceptors.request.use((req) => {

@@ -27,7 +27,7 @@ const Post = ({ post, setCurrentId }) => {
           ? (
             <>
             <ThumbUpAltIcon fontSize="small" />
-            &nbsp;
+            &nbsp;&nbsp;
             { post.likes.length > 2 ? `You and ${post.likes.length - 1} others` : `${post.likes.length} like${post.likes.length > 1 ?'s' : ''}` 
             }
             </>
@@ -131,7 +131,7 @@ const Post = ({ post, setCurrentId }) => {
           onClick={() => dispatch(deletePost(post._id ))} >
   
             <DeleteIcon fontSize="small"/>
-            &nbsp; Delete
+             Delete
             
           </Button>
         )}
