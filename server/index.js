@@ -20,7 +20,7 @@ app.use('/user', userRoutes);
 
 const CONNECTION_URL=process.env.DB_CONNECTION_URL;
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;  
 
 mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 
