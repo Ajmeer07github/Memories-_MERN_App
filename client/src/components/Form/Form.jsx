@@ -29,11 +29,13 @@ const [postData, setPostData] = useState({
 
     const user = JSON.parse(localStorage.getItem('profile'));
 
+    //whenever the single post variable changes the setPostData method is called and the post details are filled in the form automatically by useEffect functionality 
     useEffect(() => {
       if (!post?.title) clear();
       if (post) setPostData(post);
     }, [post]);
 
+    // to clearing the form fields whenver the use submitted the post 
     const clear = () => {
       setCurrentId(0);
       setPostData({

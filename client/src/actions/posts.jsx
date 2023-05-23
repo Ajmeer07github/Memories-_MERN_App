@@ -6,11 +6,12 @@ import * as api from '../api/index.jsx';
 
 // Action Creators
 // action creators are functoins that returns an action. Action is just an object with type and payload
+//dispatch function provided by Redux. It takes an action as an argument and sends it to the Redux store.dispatch simply triggers the action
 export const getPost = (id) => async (dispatch) => {
     try {
       dispatch({ type: START_LOADING });
 
-      const { data } = await api.fetchPost(id);
+      const { data } = await api.fetchPost(id); //API call to fetch a single post
   
       dispatch({ type: FETCH_POST, payload: data });
 
@@ -25,7 +26,7 @@ export const getPosts = (page) => async (dispatch) => {
     try {
       dispatch({ type: START_LOADING });
 
-      const { data: { data, currentPage, numberOfPages } } = await api.fetchPosts(page);
+      const { data: { data, currentPage, numberOfPages } } = await api.fetchPosts(page); //API call to fetch multiple posts based on the specified page
   
       dispatch({ type: FETCH_ALL, payload: { data, currentPage, numberOfPages } });
       
@@ -47,7 +48,7 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
         console.log(searchQuery);
         dispatch({ type: START_LOADING });
 
-        const { data: { data } } = await api.fetchPostBySearch(searchQuery);
+        const { data: { data } } = await api.fetchPostBySearch(searchQuery); //API call to search for posts based on the provided query
 
         dispatch({ type: END_LOADING });
 
@@ -67,7 +68,7 @@ export const createPost = (post, navigate) => async(dispatch) => {
     try {
         dispatch({ type: START_LOADING });
 
-        const { data } = await api.createPost(post);
+        const { data } = await api.createPost(post);//API call to create a new post using the provided data
 
         navigate(`/posts/${data._id}`);
 
@@ -84,7 +85,7 @@ export const createPost = (post, navigate) => async(dispatch) => {
 //update the post 
 export const updatePost = (id, post) => async (dispatch) => {
     try{
-        const { data } = await api.updatePost(id, post);
+        const { data } = await api.updatePost(id, post);//API call to update a specific post based on the id and data
 
         dispatch({ type: UPDATE, payload: data });
     }
@@ -98,7 +99,7 @@ export const updatePost = (id, post) => async (dispatch) => {
 export const likePost = (id) => async (dispatch) =>{
     const user = JSON.parse(localStorage.getItem('profile'));
     try {
-        const { data } = await api.likePost(id,user?.token); //
+        const { data } = await api.likePost(id,user?.token); //API call to like or unlike a specific post based on the provided id
 
         dispatch({ type: LIKE , payload: data} );
     } catch (error) {
@@ -110,7 +111,7 @@ export const likePost = (id) => async (dispatch) =>{
 
 export const deletePost = (id) => async (dispatch) =>{
     try {
-        await api.deletePost(id);
+        await api.deletePost(id);//API call to delete a specific post based on the provided id
         dispatch({ type: DELETE, payload: id});
         console.log('post deleted');
     } catch (error) {

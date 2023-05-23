@@ -9,6 +9,7 @@ import Style from './Poststyle';
     
 const Posts = ({ setCurrentId }) => {
     //the state.post comes from index.js in reducers
+    //useSelector is used to fetch data new post state from the redux store
     const { posts, isLoading } = useSelector((state) => state.posts);
     
     const classes =Style(); 
